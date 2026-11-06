@@ -190,18 +190,18 @@ $ curl -X POST http://127.0.0.1:5000/submit \
 ```json
 {
   "content_id": "c3de4326-aeff-4f03-b530-5b3d13e370b2",
-  "confidence": 0.2514,
-  "combined_score": 0.6257,
-  "guess": null,
-  "label": null,
+  "confidence": 0.25,
+  "combined_score": 0.625,
+  "guess": "unsure",
+  "label": "We cannot tell reliably from these signals alone. You may appeal this result if you believe it is wrong.",
   "model_score": 0.73,
   "style_score": 0.5314
 }
 ```
 
-This Milestone 3 route sample used a fixed `detector.model_signal` return of
-`0.73` while the model download was unavailable. The route still calls the
-real detector in normal operation.
+This sample used fixed detector/style values during local route testing while
+the model download was unavailable. The route calls both real signals in
+normal operation.
 
 **An appeal**
 
@@ -213,20 +213,9 @@ $ curl -X POST http://127.0.0.1:5000/appeal \
 
 ```json
 {
-  "count": 1,
-  "entries": [
-    {
-      "combined_score": 0.6257,
-      "content_id": "c3de4326-aeff-4f03-b530-5b3d13e370b2",
-      "creator_id": "writer-1",
-      "guess": null,
-      "label": null,
-      "model_score": 0.73,
-      "status": "decided",
-      "style_score": 0.5314,
-      "timestamp": "2026-11-06T15:38:33+00:00"
-    }
-  ]
+  "content_id": "8bb3f1ba-b8a9-4ba1-b827-9b79ebeab06a",
+  "message": "Your appeal was recorded and the submission is under review.",
+  "status": "under_review"
 }
 ```
 
@@ -237,7 +226,28 @@ $ curl "http://127.0.0.1:5000/log?limit=3"
 ```
 
 ```json
-
+{
+  "count": 2,
+  "entries": [
+    {
+      "combined_score": 0.625,
+      "content_id": "8bb3f1ba-b8a9-4ba1-b827-9b79ebeab06a",
+      "creator_id": "writer-1",
+      "guess": "unsure",
+      "label": "We cannot tell reliably from these signals alone. You may appeal this result if you believe it is wrong.",
+      "model_score": 0.72,
+      "status": "decided",
+      "style_score": 0.53
+    },
+    {
+      "content_id": "8bb3f1ba-b8a9-4ba1-b827-9b79ebeab06a",
+      "creator_id": "writer-1",
+      "event": "appeal",
+      "reasoning": "I wrote this myself and can provide my draft history.",
+      "status": "under_review"
+    }
+  ]
+}
 ```
 
 ---
