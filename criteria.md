@@ -44,11 +44,12 @@ Two things worth knowing before you pick numbers:
 ---
 ## 1.
 
-<!-- Your criterion. It must name a number. -->
+Of 10 pieces written by me, at most 1 may receive the high-confidence AI label.
 
 
 
-**Why this target:**
+**Why this target:** A false accusation costs a real writer more than a missed
+AI case, so I require at least 90% protection on this small personal sample.
 
 
 
@@ -56,11 +57,12 @@ Two things worth knowing before you pick numbers:
 
 ## 2.
 
-<!-- Your criterion. -->
+All three labels must be reachable: at least 1 test input in each label band.
 
 
 
-**Why this target:**
+**Why this target:** A label that cannot occur is not a useful contract and
+usually means the thresholds or upstream score range are wrong.
 
 
 
@@ -68,11 +70,12 @@ Two things worth knowing before you pick numbers:
 
 ## 3.
 
-<!-- Your criterion. -->
+At least 4 of 5 deliberately borderline texts must receive the `unsure` label.
 
 
 
-**Why this target:**
+**Why this target:** When the signals disagree or evidence is weak, uncertainty
+is safer than accusing a writer.
 
 
 
@@ -80,11 +83,13 @@ Two things worth knowing before you pick numbers:
 
 ## 4.
 
-<!-- Your criterion. -->
+100% of appeals for an existing `content_id` must return `under_review` and
+create an appeal entry in the audit log.
 
 
 
-**Why this target:**
+**Why this target:** Every writer needs a visible remedy, and an appeal that is
+not recorded cannot be investigated later.
 
 
 
@@ -92,11 +97,14 @@ Two things worth knowing before you pick numbers:
 
 ## 5.
 
-<!-- Your criterion. -->
+Missing or empty `text`, missing `creator_id`, and text over 10,000 characters
+must return a 4xx error and create no decision log entry.
 
 
 
-**Why this target:**
+**Why this target:** Malformed or unbounded input should fail clearly rather
+than crash the service, consume model resources, or create an unverifiable
+decision.
 
 
 
