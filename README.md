@@ -256,15 +256,22 @@ $ curl "http://127.0.0.1:5000/log?limit=3"
 
 **Moment 1**
 
-- *What I asked for:*
-- *What came back:*
-- *What I changed:*
+- *What I asked for:* Help me trace a submission through the starter service
+  and identify blind spots for the model and style signals.
+- *What came back:* A seven-step pipeline and a warning that predictability is
+  not authorship; plain human writing can look AI-like.
+- *What I changed:* I rewrote the explanation in my own words, chose equal
+  signal weights, and documented uncertainty plus the appeal path.
 
 **Moment 2**
 
-- *What I asked for:*
-- *What came back:*
-- *What I changed:*
+- *What I asked for:* Review the endpoint and audit-log shape after I had built
+  `/submit` and `/appeal`.
+- *What came back:* Suggestions to expose both component scores, preserve a
+  `content_id`, and append appeals instead of overwriting decisions.
+- *What I changed:* I checked the code against those suggestions, implemented
+  only the fields and behavior required by the milestone, and tested the
+  labels, appeal response, and `/log` output myself.
 
 <!-- ═══════════════════════ UNIT 8 — THE TEST ═══════════════════════ -->
 
