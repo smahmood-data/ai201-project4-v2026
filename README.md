@@ -188,8 +188,19 @@ $ curl -X POST http://127.0.0.1:5000/submit \
 ```
 
 ```json
-
+{
+  "content_id": "c3de4326-aeff-4f03-b530-5b3d13e370b2",
+  "confidence": null,
+  "guess": null,
+  "label": null,
+  "model_score": 0.73,
+  "style_score": null
+}
 ```
+
+This Milestone 3 route sample used a fixed `detector.model_signal` return of
+`0.73` while the model download was unavailable. The route still calls the
+real detector in normal operation.
 
 **An appeal**
 
@@ -200,7 +211,22 @@ $ curl -X POST http://127.0.0.1:5000/appeal \
 ```
 
 ```json
-
+{
+  "count": 1,
+  "entries": [
+    {
+      "combined_score": null,
+      "content_id": "c3de4326-aeff-4f03-b530-5b3d13e370b2",
+      "creator_id": "writer-1",
+      "guess": null,
+      "label": null,
+      "model_score": 0.73,
+      "status": "decided",
+      "style_score": null,
+      "timestamp": "2026-11-06T15:38:33+00:00"
+    }
+  ]
+}
 ```
 
 **What the log shows afterwards**
