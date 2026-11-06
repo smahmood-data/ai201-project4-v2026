@@ -64,8 +64,12 @@ def sentence_length_spread(text: str) -> float:
     `stdev` raises on fewer than two values. Decide what that should return
     before the attack set decides for you.
     """
-    # TODO: replace this
-    return 0.0
+    lengths = [len(words(sentence)) for sentence in sentences(text)]
+    lengths = [length for length in lengths if length > 0]
+    if len(lengths) < 2:
+        return 0.0
+    mean = statistics.mean(lengths)
+    return statistics.stdev(lengths) / mean if mean else 0.0
 
 
 def type_token_ratio(text: str) -> float:
@@ -80,8 +84,8 @@ def type_token_ratio(text: str) -> float:
     directly comparable on it, and if your test inputs vary a lot in length,
     that alone can look like a signal.
     """
-    # TODO: replace this
-    return 0.0
+    tokens = words(text)
+    return len(set(tokens)) / len(tokens) if tokens else 0.0
 
 
 def punctuation_density(text: str) -> float:
@@ -94,8 +98,10 @@ def punctuation_density(text: str) -> float:
         more interesting than full stops, because they vary more between
         writers.
     """
-    # TODO: replace this
-    return 0.0
+    if not text:
+        return 0.0
+    punctuation = sum(1 for character in text if character in ",;:!?—–-()[]{}\"'")
+    return punctuation / len(text)
 
 
 # ── Combining them ───────────────────────────────────────────────────────────
@@ -122,8 +128,16 @@ def style_signal(text: str) -> float:
     you trust it. Plain and ordinary, not formal: formal prose reads as *human*
     to signal one, and it is plain writing that gets accused.
     """
-    # TODO: replace this
-    return 0.5
+    spread = sentence_length_spread(text)
+    vocabulary = type_token_ratio(text)
+    punctuation = punctuation_density(text)
+
+    # Each component is normalized to an AI-likeness score. AI-like prose is
+    # more even, less varied in vocabulary, and usually less punctuation-heavy.
+    low_spread = 1.0 - min(spread, 1.0)
+    low_vocabulary = 1.0 - vocabulary
+    low_punctuation = 1.0 - min(punctuation / 0.08, 1.0)
+    return round((low_spread + low_vocabulary + low_punctuation) / 3.0, 4)
 
 
 if __name__ == "__main__":

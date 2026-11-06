@@ -190,11 +190,12 @@ $ curl -X POST http://127.0.0.1:5000/submit \
 ```json
 {
   "content_id": "c3de4326-aeff-4f03-b530-5b3d13e370b2",
-  "confidence": null,
+  "confidence": 0.2514,
+  "combined_score": 0.6257,
   "guess": null,
   "label": null,
   "model_score": 0.73,
-  "style_score": null
+  "style_score": 0.5314
 }
 ```
 
@@ -215,14 +216,14 @@ $ curl -X POST http://127.0.0.1:5000/appeal \
   "count": 1,
   "entries": [
     {
-      "combined_score": null,
+      "combined_score": 0.6257,
       "content_id": "c3de4326-aeff-4f03-b530-5b3d13e370b2",
       "creator_id": "writer-1",
       "guess": null,
       "label": null,
       "model_score": 0.73,
       "status": "decided",
-      "style_score": null,
+      "style_score": 0.5314,
       "timestamp": "2026-11-06T15:38:33+00:00"
     }
   ]
