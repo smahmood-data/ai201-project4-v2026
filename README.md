@@ -273,6 +273,19 @@ $ curl "http://127.0.0.1:5000/log?limit=3"
   only the fields and behavior required by the milestone, and tested the
   labels, appeal response, and `/log` output myself.
 
+**Moment 3**
+
+- *What I asked for:* Help me turn my five acceptance criteria into executable
+  scenarios, interpret the before/after runs, and check that the README covered
+  the milestone requirements.
+- *What came back:* A proposed scenario structure, a small evaluator extension
+  for the appeal workflow, and grouped explanations for the remaining misses.
+- *What I changed:* I selected and wrote the actual test texts and targets,
+  chose input validation as the one improvement, ran both complete result sets,
+  checked the scores and status codes, and wrote the final diagnoses and
+  production tradeoff. The AI did not decide which attacks counted as held or
+  broke; I made those judgments from the targets and responses.
+
 <!-- ═══════════════════════ UNIT 8 — THE TEST ═══════════════════════ -->
 
 ---
@@ -484,12 +497,40 @@ output is in
 <!-- For each attack still getting through and each criterion still missed:
      what you'd do, and why you stopped. -->
 
+The after run still has these broken attacks:
+
+- `EV10`: repeated AI stanza structure is classified as AI, so this evasion
+  attempt still succeeds. I would improve signal two with tests for repeated
+  phrase/stanza structure or reduce its influence when it conflicts with the
+  model signal; I stopped because changing the signal or weights would be a
+  second improvement and would invalidate the isolated input-validation
+  comparison.
+- `FP02`–`FP07`: six formal or template-like human samples are still classified
+  as AI. I would widen the unsure band or calibrate signal one on more genuine
+  formal writing; I stopped because that trade could let more AI text through,
+  and it needs a new calibration run rather than an unmeasured threshold edit.
+- `FL01_01`–`FL01_10`: the first ten requests from one creator still pass before
+  the limiter returns 429. I would add a smaller burst allowance or a separate
+  short-window limit, but stopped because the selected 10/minute policy was the
+  Milestone 1 design and changing it would be another independent experiment.
+
+Criterion 2 is still MISSED: the label-coverage scenarios reached AI and
+unsure but not human in any trial. I would add a calibrated human example or
+revisit the human threshold after measuring more human writing; I stopped
+because the before/after experiment was intentionally about route validation,
+not threshold tuning. Criteria 1, 3, 4, and 5 are MET after the change, and no
+after attack returned an unhandled 5xx.
 
 
 **The trade I'd make if this ran for real:**
 
 <!-- Two sentences. Fewer wrong accusations means more AI text getting through.
      Say which way you'd go and WHO PAYS FOR IT. -->
+
+I would favor fewer false accusations by widening the unsure band and sending
+borderline cases to appeal, even if more AI text gets through. The site and its
+reviewers would pay the cost in extra review work, while a real writer would
+pay much more if a high-confidence AI label wrongly blocked their work.
 
 
 
