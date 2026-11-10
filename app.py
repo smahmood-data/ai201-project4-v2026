@@ -217,6 +217,18 @@ def submit():
             reason="invalid_text",
         )
         return jsonify({"error": "invalid_text", "message": "text must be a non-empty string."}), 400
+    if len(text.strip()) < 3:
+        audit.log_rejection(
+            creator_id=creator_id if isinstance(creator_id, str) and creator_id.strip() else "unknown",
+            reason="text_too_short",
+        )
+        return jsonify({"error": "text_too_short", "message": "text is too short to score reliably."}), 400
+    if len(text) > 10000:
+        audit.log_rejection(
+            creator_id=creator_id if isinstance(creator_id, str) and creator_id.strip() else "unknown",
+            reason="text_too_long",
+        )
+        return jsonify({"error": "text_too_long", "message": "text must be 10,000 characters or fewer."}), 400
     if not isinstance(creator_id, str) or not creator_id.strip():
         audit.log_rejection(
             creator_id="unknown",

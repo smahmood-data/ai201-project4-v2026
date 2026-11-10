@@ -437,20 +437,43 @@ those criteria.
 
 ## The Improvement
 
-**What I changed:**
+**What I changed:** I added one input-validation improvement in `app.py`: text
+shorter than three non-whitespace characters and text longer than 10,000
+characters are rejected with 400 and recorded with `audit.log_rejection`.
 
-**Which diagnosis pointed at it:**
+**Which diagnosis pointed at it:** The route allowed a one-character input to
+reach `detector.perplexity`, causing MF02 to return 500, and allowed the
+oversized criterion input to consume the detector and create a decision.
 
 ### Attack Run — After
 
 <!-- Same format. `run_attacks.py --label after` -->
 
+The after attack run is in
+[`results/attack_run_2026-11-09_2322_after.md`](/Users/home/Desktop/ai201-project4-v2026/results/attack_run_2026-11-09_2322_after.md).
+It has **40 held** and **16 broke**, with no auto-marked 5xx failures. Compared
+with the before run, MF02 changed from 500 to 400 and MF08 changed from 200 to
+400. The evasion, false-positive, and flood results did not change.
 
 
 **Did it help, and how do I know:**
 
 <!-- Widening the unsure band usually fixes one problem and creates another.
      Reporting that trade honestly is worth full credit. -->
+
+It helped the route-safety problem without changing detector behavior: the
+bad-input criterion improved from 4/5 in every trial to 5/5, while criteria 1–4
+produced the same results in all three after trials. The full after evaluation
+output is in
+[`results/run_2026-11-09_2322_after.md`](/Users/home/Desktop/ai201-project4-v2026/results/run_2026-11-09_2322_after.md).
+
+| Criterion | Before | After | Change |
+|---|---:|---:|---|
+| 1. My own writing | 0/10 | 0/10 | unchanged, MET |
+| 2. Label coverage | 2/3 | 2/3 | unchanged, MISSED |
+| 3. Borderline texts | 4/5 | 4/5 | unchanged, MET |
+| 4. Appeal path | 5/5 | 5/5 | unchanged, MET |
+| 5. Bad input | 4/5 | 5/5 | improved, MET |
 
 
 
