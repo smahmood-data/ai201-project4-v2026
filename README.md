@@ -344,18 +344,30 @@ harder to diagnose than a false-positive label.
 
 | Criterion | Target | Run 1 | Run 2 | Run 3 | Verdict |
 |---|---|---|---|---|---|
-| 1.  |  |  |  |  |  |
-| 2.  |  |  |  |  |  |
-| 3.  |  |  |  |  |  |
-| 4.  |  |  |  |  |  |
-| 5.  |  |  |  |  |  |
+| 1. My own writing | ≤ 1/10 high-confidence AI | 0/10 | 0/10 | 0/10 | MET |
+| 2. Label coverage | 3/3 labels reachable | 2/3 | 2/3 | 2/3 | MISSED |
+| 3. Borderline texts | ≥ 4/5 unsure | 4/5 | 4/5 | 4/5 | MET |
+| 4. Appeal path | 5/5 under review and recorded | 5/5 | 5/5 | 5/5 | MET |
+| 5. Bad input | 5/5 return 4xx | 4/5 | 4/5 | 4/5 | MISSED |
 
 **Real output from one trial**, pasted as text, naming the file and function
 that produced it:
 
 ```json
-
+{
+  "file": "results/run_2026-11-09_2312_before.md",
+  "function": "run_eval.py::main",
+  "trial": 1,
+  "my own writing": [{"status":200,"guess":"unsure"},{"status":200,"guess":"unsure"},{"status":200,"guess":"human"},{"status":200,"guess":"unsure"},{"status":200,"guess":"unsure"},{"status":200,"guess":"unsure"},{"status":200,"guess":"unsure"},{"status":200,"guess":"unsure"},{"status":200,"guess":"unsure"},{"status":200,"guess":"unsure"}],
+  "label coverage": [{"status":200,"guess":"ai"},{"status":200,"guess":"unsure"},{"status":200,"guess":"unsure"}],
+  "borderline texts": [{"status":200,"guess":"unsure"},{"status":200,"guess":"unsure"},{"status":200,"guess":"unsure"},{"status":200,"guess":"unsure"},{"status":200,"guess":"human"}],
+  "appeal path": [{"status":200,"guess":"unsure","appeal_status":200},{"status":200,"guess":"unsure","appeal_status":200},{"status":200,"guess":"unsure","appeal_status":200},{"status":200,"guess":"unsure","appeal_status":200},{"status":200,"guess":"unsure","appeal_status":200}],
+  "bad input": [{"status":400,"guess":null},{"status":400,"guess":null},{"status":200,"guess":"ai"},{"status":400,"guess":null},{"status":400,"guess":null}]
+}
 ```
+
+The full actual JSON for all three trials is in
+[`results/run_2026-11-09_2312_before.md`](/Users/home/Desktop/ai201-project4-v2026/results/run_2026-11-09_2312_before.md), produced by `run_eval.py::main`.
 
 **Diagnoses**
 

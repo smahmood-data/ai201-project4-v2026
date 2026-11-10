@@ -30,8 +30,16 @@ SCENARIOS = [
         # things you actually wrote. This is the criterion that matters most and
         # it's meaningless with someone else's prose.
         "texts": [
-            "REPLACE ME with a paragraph you wrote yourself.",
-            "REPLACE ME with another one. Ten pieces is the usual number.",
+            "I keep a small notebook beside my desk because paper makes ideas feel less temporary. Each morning I write one useful question before opening my messages.",
+            "The bus was late again, but the delay gave me time to notice how the rain gathered in bright lines along the window.",
+            "I prefer simple tools for planning. A short list I will actually finish is more useful than a beautiful system I avoid.",
+            "When I cook for friends, I leave room for mistakes. The best meals usually begin with a plan and end with an adjustment.",
+            "Our neighborhood library changed its hours, so I started going on Saturday mornings. It is quieter then, and I read more slowly.",
+            "I used to save every article I liked. Now I keep only the ones I return to, which has made my reading list much less intimidating.",
+            "The first draft of this paragraph felt stiff. I read it aloud, cut two sentences, and found the point I was trying to make.",
+            "A walk after dinner is not a dramatic habit, but it gives the day a clear ending and helps me sleep.",
+            "I like working near a window even when the view is ordinary. Light changing across the wall is enough movement for a long afternoon.",
+            "My best ideas rarely arrive when I demand them. They tend to appear while I am washing dishes or looking for something I misplaced.",
         ],
     },
     {
@@ -40,31 +48,45 @@ SCENARIOS = [
         # Inputs spread across your score range, so you can check all three
         # labels are actually reachable.
         "texts": [
-            "REPLACE ME with something you're confident is AI-generated.",
-            "REPLACE ME with something you're confident is human-written.",
-            "REPLACE ME with something genuinely borderline.",
+            "Artificial intelligence can accelerate productivity by automating repetitive tasks, identifying patterns in complex data, and helping organizations make more informed decisions.",
+            "I missed the turn, pulled over, and laughed because the bakery was still there. The detour was not part of the plan, but breakfast improved because of it.",
+            "This is a careful paragraph about a topic that has some ordinary wording and some formal structure, so the signals may disagree.",
         ],
     },
-    # A bad-input criterion looks like this. Uncomment and adjust if that's one
-    # of your five — these are raw request bodies, sent exactly as written.
-    #
-    # {
-    #     "name": "bad input",
-    #     "criterion": 3,
-    #     "bodies": [
-    #         {"text": "", "creator_id": "eval_bad_empty"},
-    #         {"creator_id": "eval_bad_missing"},          # no text field at all
-    #         {"text": "word " * 50000, "creator_id": "eval_bad_huge"},
-    #         {"text": None, "creator_id": "eval_bad_null"},
-    #     ],
-    # },
-
-    # TODO: add what your remaining criteria need.
-    #
-    # A criterion about the appeal path can't be tested by sending text alone;
-    # it needs a submission first and then an appeal against the content_id
-    # that came back. You'll need to test that one by hand, or extend this file
-    # and run_eval.py to do it. Saying which you did is part of the write-up.
+    {
+        "name": "borderline texts",
+        "criterion": 3,
+        "texts": [
+            "The report is clear enough, though I would revise the opening if this were going to a wider audience.",
+            "Some parts of the plan are practical and some are still guesses, which is why I want feedback before deciding.",
+            "The meeting covered the schedule, the budget, and one question nobody answered about maintenance.",
+            "I understand the argument, but I am not convinced the examples support its strongest conclusion.",
+            "A useful first version should be specific without pretending that every uncertainty has disappeared.",
+        ],
+    },
+    {
+        "name": "appeal path",
+        "criterion": 4,
+        "appeal": True,
+        "texts": [
+            "I wrote this short submission myself and would like the opportunity to provide my draft history for review.",
+            "This is another ordinary piece of writing submitted so the appeal workflow can be checked end to end.",
+            "A writer should receive a clear status when a decision is challenged rather than having the original record disappear.",
+            "The appeal message explains that authorship evidence can be supplied if the reviewer needs more context.",
+            "Recording the challenge beside the decision preserves both the original result and the writer's response.",
+        ],
+    },
+    {
+        "name": "bad input",
+        "criterion": 5,
+        "bodies": [
+            {"text": "", "creator_id": "eval_bad_empty"},
+            {"creator_id": "eval_bad_missing"},
+            {"text": "word " * 2500, "creator_id": "eval_bad_huge"},
+            {"text": None, "creator_id": "eval_bad_null"},
+            {"text": "valid text but no creator", "creator_id": None},
+        ],
+    },
 ]
 
 
