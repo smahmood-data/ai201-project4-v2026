@@ -369,8 +369,54 @@ that produced it:
 The full actual JSON for all three trials is in
 [`results/run_2026-11-09_2312_before.md`](/Users/home/Desktop/ai201-project4-v2026/results/run_2026-11-09_2312_before.md), produced by `run_eval.py::main`.
 
-**Diagnoses**
+Criterion 1 is MET because every trial had zero high-confidence AI labels in
+the ten personal samples, below the maximum of one. Criterion 2 is MISSED
+because every trial reached only AI and unsure, not all three labels. Criterion
+3 is MET because each trial had four of five borderline samples labelled
+unsure. Criterion 4 is MET because every submitted content received a 200
+appeal response and an `under_review` audit event in all three trials. Criterion
+5 is MISSED because the empty, missing, null, and missing-creator bodies were
+400, but the oversized body was 200 in every trial.
 
+**Diagnoses**
+Criterion 2 is MISSED at the label-mapping stage: the route and both signals
+worked, but none of the three chosen inputs produced a combined score at or
+below the human threshold, so the human label was unreachable for this sample.
+The mechanism is the selected calibration texts, not randomness: their scores
+landed in the AI or unsure bands.
+
+Criterion 5 is MISSED at the route stage: four malformed bodies returned 400,
+but the 10,000-character case reached signal one and returned 200. The route
+validates type and emptiness but has no maximum-length guard, so it spends model
+resources on an unbounded input and creates a normal decision entry.
+
+The broken attacks show three patterns:
+
+- `EV10` is a signal-two failure. Repeated stanza structure looks highly
+  regular to the stylometry measures, producing a high style score; the
+  combining rule averages that with the high model score, and label mapping
+  correctly returns AI. The mechanism is that the style signal mistakes
+  repetition for machine authorship.
+- `FP02`–`FP07` are false positives at signal one and the combining rule.
+  Formal, careful human prose is predictable to GPT-2, so model scores from
+  0.739 to 0.882 were high; style scores were also high enough that the equal
+  weighted average crossed 0.65, and label mapping returned AI. The mechanism
+  is that register and template-like structure resemble generated prose.
+- `MF02` fails at signal one: the route accepts the one-character string, then
+  `detector.perplexity` raises `ValueError` because fewer than three model
+  tokens cannot be scored. There is no route-level recovery, so Flask returns
+  500 instead of a controlled 4xx.
+- `FL01_01`–`FL01_10` are rate-limiter behavior, not detector misses. The
+  limiter's configured mechanism intentionally allows the first ten requests
+  per creator per minute; only `FL01_11` and `FL01_12` were rejected with 429.
+  The flood attack therefore broke through the available burst allowance, even
+  though the limiter itself recorded the later rejections.
+
+The main pattern is that the label and combining stages faithfully amplify
+upstream scores: predictable human writing and regular structure become AI
+labels. Separately, input validation is incomplete for short and oversized
+text. The appeal and audit paths met their targets; no diagnosis is needed for
+those criteria.
 <!-- For each miss AND each broken attack: the stage and the mechanism.
 
      Your service has five stages: the route, signal one, signal two, the
